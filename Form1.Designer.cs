@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnGetTaggedImage = new System.Windows.Forms.Button();
             this.gvLabels = new System.Windows.Forms.DataGridView();
             this.ttbLabel = new System.Windows.Forms.TextBox();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
@@ -36,6 +37,7 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.colLabelName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colImage = new System.Windows.Forms.DataGridViewImageColumn();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvLabels)).BeginInit();
             this.panel2.SuspendLayout();
@@ -45,6 +47,7 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.panel1.Controls.Add(this.btnGetTaggedImage);
             this.panel1.Controls.Add(this.gvLabels);
             this.panel1.Controls.Add(this.ttbLabel);
             this.panel1.Controls.Add(this.richTextBox1);
@@ -55,12 +58,25 @@
             this.panel1.Size = new System.Drawing.Size(230, 650);
             this.panel1.TabIndex = 0;
             // 
+            // btnGetTaggedImage
+            // 
+            this.btnGetTaggedImage.BackColor = System.Drawing.Color.White;
+            this.btnGetTaggedImage.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnGetTaggedImage.Location = new System.Drawing.Point(12, 449);
+            this.btnGetTaggedImage.Name = "btnGetTaggedImage";
+            this.btnGetTaggedImage.Size = new System.Drawing.Size(208, 37);
+            this.btnGetTaggedImage.TabIndex = 4;
+            this.btnGetTaggedImage.Text = "Get Tagged Image";
+            this.btnGetTaggedImage.UseVisualStyleBackColor = false;
+            this.btnGetTaggedImage.Click += new System.EventHandler(this.btnGetTaggedImage_Click);
+            // 
             // gvLabels
             // 
             this.gvLabels.AllowUserToAddRows = false;
             this.gvLabels.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gvLabels.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.colLabelName});
+            this.colLabelName,
+            this.colImage});
             this.gvLabels.Location = new System.Drawing.Point(12, 286);
             this.gvLabels.Name = "gvLabels";
             this.gvLabels.RowHeadersVisible = false;
@@ -122,10 +138,18 @@
             // 
             // colLabelName
             // 
-            this.colLabelName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.colLabelName.DataPropertyName = "LABEL_NAME";
             this.colLabelName.HeaderText = "Name";
             this.colLabelName.Name = "colLabelName";
+            this.colLabelName.Width = 80;
+            // 
+            // colImage
+            // 
+            this.colImage.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colImage.DataPropertyName = "IMAGE";
+            this.colImage.HeaderText = "Image";
+            this.colImage.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Zoom;
+            this.colImage.Name = "colImage";
             // 
             // Form1
             // 
@@ -154,7 +178,9 @@
         private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.DataGridView gvLabels;
         private System.Windows.Forms.TextBox ttbLabel;
+        private System.Windows.Forms.Button btnGetTaggedImage;
         private System.Windows.Forms.DataGridViewTextBoxColumn colLabelName;
+        private System.Windows.Forms.DataGridViewImageColumn colImage;
     }
 }
 

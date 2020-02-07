@@ -31,6 +31,7 @@ namespace TesseractDemo
             dtLabels.Columns.Add("Y1", typeof(int));
             dtLabels.Columns.Add("X2", typeof(int));
             dtLabels.Columns.Add("Y2", typeof(int));
+            dtLabels.Columns.Add("IMAGE", typeof(Image));//FRO PREVIEW
 
             gvLabels.AutoGenerateColumns = false;
             gvLabels.DataSource = dtLabels; // set data source
@@ -184,6 +185,38 @@ namespace TesseractDemo
                 ttbLabel.Text = "";
                 ttbLabel.Focus();
 
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void btnGetTaggedImage_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if(dtLabels.Rows.Count == 0)
+                {
+                    return; //
+                }
+                ImageHelper ih = new ImageHelper();
+                string sLabelName = "";
+                Bitmap source = new Bitmap(pictureBox1.Image);
+                foreach(DataRow dr_label in dtLabels.Rows)
+                {
+                    sLabelName = dr_label["LABEL_NAME"].ToString();
+                    Point p1 = new Point((int)dr_label["X1"], (int)dr_label["Y1"]);
+                    Point p2 = new Point((int)dr_label["X2"], (int)dr_label["Y2"]);
+                    Bitmap img = ih.Crop(source, p1,p2);
+                    img = ih.Resize(img, img.Width * 5, img.Height * 5);
+                    img = ih.SetGrayscale(img);
+                    img = ih.GaussianBlur(img);
+                    img = ih.ConvertTo1Bpp1(img, 100);
+                    dr_label.BeginEdit();
+                    dr_label["IMAGE"] = img;
+                    dr_label.EndEdit();
+                }
             }
             catch (Exception ex)
             {
