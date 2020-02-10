@@ -42,6 +42,7 @@
             this.colVal = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.btnZoomIn = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvLabels)).BeginInit();
             this.panel2.SuspendLayout();
@@ -52,6 +53,7 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.panel1.Controls.Add(this.btnZoomIn);
             this.panel1.Controls.Add(this.pictureBox2);
             this.panel1.Controls.Add(this.btnGetTaggedImage);
             this.panel1.Controls.Add(this.gvLabels);
@@ -61,7 +63,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(230, 650);
+            this.panel1.Size = new System.Drawing.Size(230, 697);
             this.panel1.TabIndex = 0;
             // 
             // btnGetTaggedImage
@@ -126,7 +128,7 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(230, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(834, 650);
+            this.panel2.Size = new System.Drawing.Size(834, 697);
             this.panel2.TabIndex = 1;
             // 
             // pictureBox1
@@ -134,7 +136,7 @@
             this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(834, 650);
+            this.pictureBox1.Size = new System.Drawing.Size(834, 697);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
@@ -180,11 +182,23 @@
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // btnZoomIn
+            // 
+            this.btnZoomIn.BackColor = System.Drawing.Color.White;
+            this.btnZoomIn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnZoomIn.Location = new System.Drawing.Point(12, 645);
+            this.btnZoomIn.Name = "btnZoomIn";
+            this.btnZoomIn.Size = new System.Drawing.Size(208, 37);
+            this.btnZoomIn.TabIndex = 6;
+            this.btnZoomIn.Text = "Zoom In";
+            this.btnZoomIn.UseVisualStyleBackColor = false;
+            this.btnZoomIn.Click += new System.EventHandler(this.btnZoomIn_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1064, 650);
+            this.ClientSize = new System.Drawing.Size(1064, 697);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Name = "Form1";
@@ -214,6 +228,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colVal;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Button btnZoomIn;
     }
 }
 

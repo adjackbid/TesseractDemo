@@ -20,6 +20,10 @@ namespace TesseractDemo
 
         DataTable dtLabels;
 
+        bool IsZoomIn = false;
+        private Point pLeftUpper_Croped;
+        Image image_ori = null;
+
         public Form1()
         {
             InitializeComponent();
@@ -53,13 +57,19 @@ namespace TesseractDemo
                     return;
                 }
 
+                if (image_ori != null)
+                {
+                    image_ori.Dispose();
+                }
+
                 sFileName = fileDialog.FileName;
 
-                Image img = Image.FromFile(sFileName);
-                Bitmap bitmap = new Bitmap(img);
-                pictureBox1.Image = bitmap;
+                //Image img = Image.FromFile(sFileName);
+                image_ori = Image.FromFile(sFileName);
+                //Bitmap bitmap = new Bitmap(img);
+                pictureBox1.Image = image_ori;
 
-                img.Dispose();
+                //img.Dispose();
             }
             catch (Exception ex)
             {
@@ -173,6 +183,15 @@ namespace TesseractDemo
 
                 Point location1 = GetActualLocation(pLeftUpper);
                 Point location2 = GetActualLocation(pRightDown);
+
+                //如果Zoom In下框選，需要補上相對位置
+                if (IsZoomIn)
+                {
+                    location1.X += pLeftUpper.X;
+                    location1.Y += pLeftUpper.Y;
+                    location2.X += pLeftUpper.X;
+                    location2.Y += pLeftUpper.Y;
+                }
 
                 DataRow dr_new = dtLabels.NewRow();
                 dr_new["LABEL_NAME"] = sLabelName;
@@ -302,6 +321,64 @@ namespace TesseractDemo
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private void btnZoomIn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if(IsZoomIn)
+                {
+                    UnCrop(); 
+                }
+                else
+                {
+                    if (pLeftUpper == Point.Empty || pRightDown == Point.Empty)
+                    {
+                        throw new Exception("末選取縮放範圍!!");
+                    }
+
+                    Crop();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void Crop()
+        {
+            Point pLeftUpper_ACT = GetActualLocation(pLeftUpper);
+            Point pRightDown_ACT = GetActualLocation(pRightDown);
+            //get croped location
+            pLeftUpper_Croped = pLeftUpper_ACT;
+
+            pLeftUpper = Point.Empty;
+            pRightDown = Point.Empty;
+
+            ImageHelper ih = new ImageHelper();
+            Image img_crop = ih.Crop((Bitmap)image_ori, pLeftUpper_ACT, pRightDown_ACT);
+
+            pictureBox1.Image = img_crop;
+            IsZoomIn = true;
+            btnZoomIn.Text = "Zoom Out";
+        }
+
+        private void UnCrop()
+        {
+            //uncrop
+            btnZoomIn.Text = "Zoom In";
+            IsZoomIn = false;
+            pLeftUpper_Croped = Point.Empty;
+            pLeftUpper = Point.Empty;
+            pRightDown = Point.Empty;
+
+            if (image_ori != pictureBox1.Image)
+            {
+                pictureBox1.Image = image_ori;
+            }
+            Refresh();
         }
     }
 }
