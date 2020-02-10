@@ -38,6 +38,7 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.colLabelName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colImage = new System.Windows.Forms.DataGridViewImageColumn();
+            this.colVal = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvLabels)).BeginInit();
             this.panel2.SuspendLayout();
@@ -76,7 +77,8 @@
             this.gvLabels.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gvLabels.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colLabelName,
-            this.colImage});
+            this.colImage,
+            this.colVal});
             this.gvLabels.Location = new System.Drawing.Point(12, 286);
             this.gvLabels.Name = "gvLabels";
             this.gvLabels.RowHeadersVisible = false;
@@ -141,7 +143,7 @@
             this.colLabelName.DataPropertyName = "LABEL_NAME";
             this.colLabelName.HeaderText = "Name";
             this.colLabelName.Name = "colLabelName";
-            this.colLabelName.Width = 80;
+            this.colLabelName.Width = 60;
             // 
             // colImage
             // 
@@ -150,6 +152,13 @@
             this.colImage.HeaderText = "Image";
             this.colImage.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Zoom;
             this.colImage.Name = "colImage";
+            // 
+            // colVal
+            // 
+            this.colVal.DataPropertyName = "VAL";
+            this.colVal.HeaderText = "VAL";
+            this.colVal.Name = "colVal";
+            this.colVal.Width = 60;
             // 
             // Form1
             // 
@@ -181,6 +190,7 @@
         private System.Windows.Forms.Button btnGetTaggedImage;
         private System.Windows.Forms.DataGridViewTextBoxColumn colLabelName;
         private System.Windows.Forms.DataGridViewImageColumn colImage;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colVal;
     }
 }
 

@@ -32,6 +32,7 @@ namespace TesseractDemo
             dtLabels.Columns.Add("X2", typeof(int));
             dtLabels.Columns.Add("Y2", typeof(int));
             dtLabels.Columns.Add("IMAGE", typeof(Image));//FRO PREVIEW
+            dtLabels.Columns.Add("VAL", typeof(string));
 
             gvLabels.AutoGenerateColumns = false;
             gvLabels.DataSource = dtLabels; // set data source
@@ -233,6 +234,7 @@ namespace TesseractDemo
                     //更新Image欄位
                     dr_label.BeginEdit();
                     dr_label["IMAGE"] = img;
+                    dr_label["VAL"] = OCRHelper.OCR(img); //傳入圖片進行OCR
                     dr_label.EndEdit();
                 }
             }
