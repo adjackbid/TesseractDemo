@@ -243,5 +243,65 @@ namespace TesseractDemo
                 MessageBox.Show(ex.Message);
             }
         }
+
+        /// <summary>
+        /// 進入圖片區時，開啟放大功能(Timer Start)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void pictureBox1_MouseEnter(object sender, EventArgs e)
+        {
+            if(pictureBox1.Image == null) { return; }
+            timer1.Interval = 1 * 100;
+            timer1.Start();
+            
+        }
+
+        /// <summary>
+        /// 離開圖片區時，取消放大功能(Timer Stop)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void pictureBox1_MouseLeave(object sender, EventArgs e)
+        {
+            timer1.Stop();
+            pictureBox2.Image = null;
+        }
+
+        /// <summary>
+        /// 每0.1秒，顯示mouse目前區域且放大2倍示顯
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                int x = Control.MousePosition.X;
+                int y = Control.MousePosition.Y;
+
+                int magnification = 2;//倍率
+                int imgWidth = pictureBox2.Width;
+                int imgHeight = pictureBox2.Height;
+
+                Bitmap bt = new Bitmap(imgWidth / magnification, imgHeight / magnification);
+                using(Graphics g = Graphics.FromImage(bt))
+                {
+                    g.CopyFromScreen(
+                         new Point(Cursor.Position.X - imgWidth / (2 * magnification),
+                                   Cursor.Position.Y - imgHeight / (2 * magnification)),
+                         new Point(0,0),
+                         new Size(imgWidth / magnification, imgHeight / magnification));
+                    IntPtr dc1 = g.GetHdc();
+                    g.ReleaseHdc(dc1);
+                }
+
+                pictureBox2.Image = (Image)bt;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
     }
 }
