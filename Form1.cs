@@ -256,19 +256,23 @@ namespace TesseractDemo
 
                     //放大五倍
                     img = ih.Resize(img, img.Width * 5, img.Height * 5);
-                    img.Save($"{sImgPath}{sLabelName}-Step2-Resize2.bmp", System.Drawing.Imaging.ImageFormat.Bmp);
+                    img.Save($"{sImgPath}{sLabelName}-Step2-Resize.bmp", System.Drawing.Imaging.ImageFormat.Bmp);
 
                     //轉成灰階
                     img = ih.SetGrayscale(img);
                     img.Save($"{sImgPath}{sLabelName}-Step3-SetGrayscale.bmp", System.Drawing.Imaging.ImageFormat.Bmp);
 
+                    //反轉(檢查黑大於白的話，進行反轉)
+                    img = ih.Invert(img);
+                    img.Save($"{sImgPath}{sLabelName}-Step4-Invert.bmp", System.Drawing.Imaging.ImageFormat.Bmp);
+
                     //高斯模糊(為了解決文字解析度或字型造成缺口問題)
                     img = ih.GaussianBlur(img);
-                    img.Save($"{sImgPath}{sLabelName}-Step4-GaussianBlur.bmp", System.Drawing.Imaging.ImageFormat.Bmp);
+                    img.Save($"{sImgPath}{sLabelName}-Step5-GaussianBlur.bmp", System.Drawing.Imaging.ImageFormat.Bmp);
 
                     //轉成絕對黑白
                     img = ih.SetToBW(img, 190);
-                    img.Save($"{sImgPath}{sLabelName}-Step5-ConvertTo1Bpp1.bmp", System.Drawing.Imaging.ImageFormat.Bmp);
+                    img.Save($"{sImgPath}{sLabelName}-Step6-ConvertTo1Bpp1.bmp", System.Drawing.Imaging.ImageFormat.Bmp);
 
                     //更新Image欄位
                     dr_label.BeginEdit();

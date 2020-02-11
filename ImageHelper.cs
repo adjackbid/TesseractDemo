@@ -69,5 +69,59 @@ namespace TesseractDemo
             filter.ApplyInPlace(bmp);
             return bmp;
         }
+
+        public Bitmap Invert(Bitmap img)
+        {
+            Int32 th = 150;//150
+            Int32 countBlack = 0;
+            Int32 countWhite = 0;
+
+            //轉成24bppRgb (for Set Pixel
+            Bitmap bmp = img.Clone(new Rectangle(0, 0, img.Width, img.Height), System.Drawing.Imaging.PixelFormat.Format24bppRgb); 
+
+            for (var x = 0; x < bmp.Width; x++)
+            {
+                for (var y = 0; y < bmp.Height; y++)
+                {
+                    var pixel = bmp.GetPixel(x, y);
+                    if (pixel.R < th && pixel.G < th && pixel.B < th)
+                    {
+                        bmp.SetPixel(x, y, Color.Black);
+                        countBlack++;
+                    }
+                    else
+                    {
+                        bmp.SetPixel(x, y, Color.White);
+                        countWhite++;
+                    }
+                }
+            }
+
+            if (countBlack > countWhite)
+            {
+                //reverse
+                for (var x = 0; x < bmp.Width; x++)
+                {
+                    for (var y = 0; y < bmp.Height; y++)
+                    {
+                        var pixel = bmp.GetPixel(x, y);
+                        if (pixel.R < 220 && pixel.G < 220 && pixel.B < 220)
+                        {
+                            bmp.SetPixel(x, y, Color.White);
+                        }
+                        else
+                        {
+                            bmp.SetPixel(x, y, Color.Black);
+                        }
+                    }
+                }
+            }
+
+            //轉回成8bppIndex
+            Bitmap bmp2 = bmp.Clone(new Rectangle(0, 0, bmp.Width, bmp.Height), System.Drawing.Imaging.PixelFormat.Format8bppIndexed);
+
+            return bmp2;
+        }
+
     }
 }
