@@ -237,38 +237,38 @@ namespace TesseractDemo
 
             string sImgPath = @".\img\";
             ImageHelper ih = new ImageHelper();
-            string sLabelName = "";
+            //string sLabelName = "";
 
             foreach (DataRow dr_label in dtLabels.Rows)
             {
                 Bitmap source = new Bitmap(pictureBox1.Image);
-
+                
                 //每一個Task處理Label (非同步方式執行)
                 tasks[iIndex] = Task.Run(() => {
 
-                    sLabelName = dr_label["LABEL_NAME"].ToString();
+                    string sLabelName = dr_label["LABEL_NAME"].ToString();
                     Point p1 = new Point((int)dr_label["X1"], (int)dr_label["Y1"]);
                     Point p2 = new Point((int)dr_label["X2"], (int)dr_label["Y2"]);
 
                     //抓取標記的範圍
                     Bitmap img = ih.Crop(source, p1, p2);
-                    //img.Save($"{sImgPath}{sLabelName}-Step1-Ori.bmp", System.Drawing.Imaging.ImageFormat.Bmp);
+                    img.Save($"{sImgPath}{sLabelName}-Step1-Ori.bmp", System.Drawing.Imaging.ImageFormat.Bmp);
 
                     //放大五倍
                     img = ih.Resize(img, img.Width * 5, img.Height * 5);
-                    //img.Save($"{sImgPath}{sLabelName}-Step2-Resize2.bmp", System.Drawing.Imaging.ImageFormat.Bmp);
+                    img.Save($"{sImgPath}{sLabelName}-Step2-Resize2.bmp", System.Drawing.Imaging.ImageFormat.Bmp);
 
                     //轉成灰階
                     img = ih.SetGrayscale(img);
-                    //img.Save($"{sImgPath}{sLabelName}-Step3-SetGrayscale.bmp", System.Drawing.Imaging.ImageFormat.Bmp);
+                    img.Save($"{sImgPath}{sLabelName}-Step3-SetGrayscale.bmp", System.Drawing.Imaging.ImageFormat.Bmp);
 
                     //高斯模糊(為了解決文字解析度或字型造成缺口問題)
                     img = ih.GaussianBlur(img);
-                    //img.Save($"{sImgPath}{sLabelName}-Step4-GaussianBlur.bmp", System.Drawing.Imaging.ImageFormat.Bmp);
+                    img.Save($"{sImgPath}{sLabelName}-Step4-GaussianBlur.bmp", System.Drawing.Imaging.ImageFormat.Bmp);
 
                     //轉成絕對黑白
                     img = ih.SetToBW(img, 190);
-                    //img.Save($"{sImgPath}{sLabelName}-Step5-ConvertTo1Bpp1.bmp", System.Drawing.Imaging.ImageFormat.Bmp);
+                    img.Save($"{sImgPath}{sLabelName}-Step5-ConvertTo1Bpp1.bmp", System.Drawing.Imaging.ImageFormat.Bmp);
 
                     //更新Image欄位
                     dr_label.BeginEdit();
