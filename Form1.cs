@@ -187,10 +187,10 @@ namespace TesseractDemo
                 //如果Zoom In下框選，需要補上相對位置
                 if (IsZoomIn)
                 {
-                    location1.X += pLeftUpper.X;
-                    location1.Y += pLeftUpper.Y;
-                    location2.X += pLeftUpper.X;
-                    location2.Y += pLeftUpper.Y;
+                    location1.X += pLeftUpper_Croped.X;
+                    location1.Y += pLeftUpper_Croped.Y;
+                    location2.X += pLeftUpper_Croped.X;
+                    location2.Y += pLeftUpper_Croped.Y;
                 }
 
                 DataRow dr_new = dtLabels.NewRow();
@@ -212,7 +212,7 @@ namespace TesseractDemo
             }
         }
 
-        private void btnGetTaggedImage_Click(object sender, EventArgs e)
+        private async void btnGetTaggedImage_Click(object sender, EventArgs e)
         {
             try
             {
@@ -220,35 +220,55 @@ namespace TesseractDemo
                 {
                     return; //
                 }
-                string sImgPath = @".\img\";
-                ImageHelper ih = new ImageHelper();
-                string sLabelName = "";
+
+                await ImagePreProcessAsync();
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private async Task ImagePreProcessAsync()
+        {
+            Task[] tasks = new Task[dtLabels.Rows.Count];
+            int iIndex = 0;
+
+            string sImgPath = @".\img\";
+            ImageHelper ih = new ImageHelper();
+            string sLabelName = "";
+
+            foreach (DataRow dr_label in dtLabels.Rows)
+            {
                 Bitmap source = new Bitmap(pictureBox1.Image);
-                foreach(DataRow dr_label in dtLabels.Rows)
-                {
+
+                //每一個Task處理Label (非同步方式執行)
+                tasks[iIndex] = Task.Run(() => {
+
                     sLabelName = dr_label["LABEL_NAME"].ToString();
                     Point p1 = new Point((int)dr_label["X1"], (int)dr_label["Y1"]);
                     Point p2 = new Point((int)dr_label["X2"], (int)dr_label["Y2"]);
 
                     //抓取標記的範圍
-                    Bitmap img = ih.Crop(source, p1,p2);
-                    img.Save($"{sImgPath}{sLabelName}-Step1-Ori.bmp", System.Drawing.Imaging.ImageFormat.Bmp);
+                    Bitmap img = ih.Crop(source, p1, p2);
+                    //img.Save($"{sImgPath}{sLabelName}-Step1-Ori.bmp", System.Drawing.Imaging.ImageFormat.Bmp);
 
                     //放大五倍
                     img = ih.Resize(img, img.Width * 5, img.Height * 5);
-                    img.Save($"{sImgPath}{sLabelName}-Step2-Resize2.bmp", System.Drawing.Imaging.ImageFormat.Bmp);
+                    //img.Save($"{sImgPath}{sLabelName}-Step2-Resize2.bmp", System.Drawing.Imaging.ImageFormat.Bmp);
 
                     //轉成灰階
                     img = ih.SetGrayscale(img);
-                    img.Save($"{sImgPath}{sLabelName}-Step3-SetGrayscale.bmp", System.Drawing.Imaging.ImageFormat.Bmp);
+                    //img.Save($"{sImgPath}{sLabelName}-Step3-SetGrayscale.bmp", System.Drawing.Imaging.ImageFormat.Bmp);
 
                     //高斯模糊(為了解決文字解析度或字型造成缺口問題)
                     img = ih.GaussianBlur(img);
-                    img.Save($"{sImgPath}{sLabelName}-Step4-GaussianBlur.bmp", System.Drawing.Imaging.ImageFormat.Bmp);
+                    //img.Save($"{sImgPath}{sLabelName}-Step4-GaussianBlur.bmp", System.Drawing.Imaging.ImageFormat.Bmp);
 
                     //轉成絕對黑白
                     img = ih.SetToBW(img, 190);
-                    img.Save($"{sImgPath}{sLabelName}-Step5-ConvertTo1Bpp1.bmp", System.Drawing.Imaging.ImageFormat.Bmp);
+                    //img.Save($"{sImgPath}{sLabelName}-Step5-ConvertTo1Bpp1.bmp", System.Drawing.Imaging.ImageFormat.Bmp);
 
                     //更新Image欄位
                     dr_label.BeginEdit();
@@ -256,11 +276,11 @@ namespace TesseractDemo
                     dr_label["VAL"] = OCRHelper.OCR(img); //傳入圖片進行OCR
                     dr_label.EndEdit();
                 }
+                );
+                iIndex++;
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+
+            Task.WaitAll(tasks); // 等待所有Task完成後
         }
 
         /// <summary>
